@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rechazar Imagen - Universidad ISEP</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #7848FF 0%, #1B156B 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
+      padding: 40px 30px;
+      text-align: center;
+      color: white;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #e0e0e0;
+      flex-wrap: wrap;
+    }
+    
+    .tab {
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      color: #666;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .tab:hover {
+      color: #7848FF;
+    }
+    
+    .tab.active {
+      color: #7848FF;
+      border-bottom-color: #7848FF;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Info boxes */
+    .info-section {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .info-section h3 {
+      color: #1B156B;
+      font-size: 16px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #7848FF;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    
+    .info-item {
+      background: white;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 3px solid #FF7F1D;
+    }
+    
+    .info-item label {
+      display: block;
+      color: #FF7F1D;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    
+    .info-item .value {
+      color: #333;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .content-display {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .content-display pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: inherit;
+      margin: 0;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    
+    /* Paleta de colores */
+    .color-palette {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    
+    .color-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .color-box {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 2px solid #ddd;
+    }
+    
+    .color-code {
+      font-size: 12px;
+      color: #666;
+      font-family: monospace;
+    }
+    
+    /* Formulario */
+    .form-section {
+      background: #FFF3E0;
+      border-left: 4px solid #FF7F1D;
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+    
+    .form-section h3 {
+      color: #FF7F1D;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    
+    .form-group label .required {
+      color: #f44336;
+      margin-left: 4px;
+    }
+    
+    .form-group textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+    
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #7848FF;
+      box-shadow: 0 0 0 3px rgba(120, 72, 255, 0.1);
+    }
+    
+    .char-count {
+      text-align: right;
+      font-size: 12px;
+      color: #999;
+      margin-top: 5px;
+    }
+    
+    .tips-box {
+      background: #F1EDFF;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #7848FF;
+      margin-bottom: 20px;
+    }
+    
+    .tips-box h4 {
+      color: #7848FF;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    .tips-box ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .tips-box li {
+      color: #555;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 6px;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .tips-box li:before {
+      content: "•";
+      color: #7848FF;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+    
+    /* Botones */
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background: #f44336;
+      color: white;
+      box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background: #d32f2f;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+    }
+    
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #555;
+    }
+    
+    .btn-secondary:hover {
+      background: #d0d0d0;
+      transform: translateY(-2px);
+    }
+    
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+    }
+    
+    .success-message.show {
+      display: block;
+    }
+    
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    
+    .success-message h2 {
+      color: #4caf50;
+      margin-bottom: 15px;
+      font-size: 28px;
+    }
+    
+    .success-message p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    
+    .loading-spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #7848FF;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .tabs {
+        overflow-x: auto;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🚫 Rechazar Imagen</h1>
+      <p>Sistema de Revisión de Imágenes - Universidad ISEP</p>
+    </div>
+    
+    <!-- Loading -->
+    <div id="loadingState" class="loading">
+      <div class="loading-spinner"></div>
+      <p>Cargando información de la imagen...</p>
+    </div>
+    
+    <!-- Content -->
+    <div class="content" id="mainContent" style="display: none;">
+      
+      <!-- Información General -->
+      <div class="info-section">
+        <h3>📊 Información General de la Imagen</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>ID / Unique ID</label>
+            <div class="value" id="display-ids">-</div>
+          </div>
+          <div class="info-item">
+            <label>Campaña / Título</label>
+            <div class="value" id="display-campaign">-</div>
+          </div>
+          <div class="info-item">
+            <label>Plataforma / Tipo</label>
+            <div class="value" id="display-platform">-</div>
+          </div>
+          <div class="info-item">
+            <label>Estilo Visual / Emoción</label>
+            <div class="value" id="display-style">-</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tabs Navigation -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('descripcion')">🎨 Descripción Visual</button>
+        <button class="tab" onclick="switchTab('prompt')">🤖 Prompt Gemini</button>
+        <button class="tab" onclick="switchTab('rechazo')">🚫 Formulario de Rechazo</button>
+      </div>
+      
+      <!-- Tab 1: Descripción Visual -->
+      <div id="tab-descripcion" class="tab-content active">
+        <div class="info-section">
+          <h3>🎨 Descripción Visual de la Imagen</h3>
+          <div class="content-display">
+            <pre id="display-descripcionVisual">-</pre>
+          </div>
+          
+          <!-- Paleta de colores -->
+          <div style="margin-top: 20px;">
+            <h4 style="color: #7848FF; margin-bottom: 10px; font-size: 14px;">🎨 Paleta de Colores:</h4>
+            <div class="color-palette" id="display-palette">
+              <span style="color: #999; font-size: 13px;">Sin paleta definida</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tab 2: Prompt Gemini -->
+      <div id="tab-prompt" class="tab-content">
+        <div class="info-section">
+          <h3>🤖 Prompt Utilizado en Gemini</h3>
+          <div class="content-display">
+            <pre id="display-promptGemini">-</pre>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tab 3: Formulario de Rechazo -->
+      <div id="tab-rechazo" class="tab-content">
+        <div class="form-section">
+          <h3>📝 Especifica los Cambios Necesarios en la Imagen</h3>
+          
+          <form id="rejectionForm">
+            
+            <div class="form-group">
+              <label for="cambios-visuales">
+                Cambios Visuales en la Imagen
+                <span class="required">*</span>
+              </label>
+              <textarea 
+                id="cambios-visuales"
+                name="cambios_visuales"
+                required
+                placeholder="Especifica qué está mal en la IMAGEN GENERADA (sin texto ni logo)...&#10;&#10;Ejemplos:&#10;- La cara de la persona se ve distorsionada&#10;- Los colores no coinciden con la paleta especificada&#10;- El fondo está muy saturado, necesita ser más sutil&#10;- Los iconos no se ven claros, aumentar el tamaño&#10;- Faltan elementos mencionados en la descripción (libros, símbolos, etc.)&#10;- La composición está desbalanceada, centrar mejor los elementos"
+                maxlength="1500"
+              ></textarea>
+              <div class="char-count">
+                <span class="char-counter">0</span> / 1500 caracteres
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="cambios-prompt">
+                Cambios en el Prompt de Gemini (Opcional)
+              </label>
+              <textarea 
+                id="cambios-prompt"
+                name="cambios_prompt"
+                placeholder="Si es necesario ajustar el prompt para mejorar la imagen...&#10;&#10;Ejemplos:&#10;- Agregar más detalles sobre el estilo de ilustración&#10;- Especificar mejor la iluminación y sombras&#10;- Aclarar la composición de los elementos&#10;- Ajustar las instrucciones sobre los colores&#10;- Mejorar la descripción de los personajes o elementos"
+                maxlength="1000"
+              ></textarea>
+              <div class="char-count">
+                <span class="char-counter">0</span> / 1000 caracteres
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="comentarios-generales">
+                Comentarios Adicionales
+              </label>
+              <textarea 
+                id="comentarios-generales"
+                name="comentario_rechazo"
+                placeholder="Comentarios generales sobre el rechazo...&#10;&#10;Ejemplos:&#10;- La imagen necesita regenerarse completamente&#10;- Solo ajustar el balance de colores&#10;- Prioridad: CRÍTICO / MEDIO / BAJO"
+                maxlength="1000"
+              ></textarea>
+              <div class="char-count">
+                <span class="char-counter">0</span> / 1000 caracteres
+              </div>
+            </div>
+            
+            <!-- Tips -->
+            <div class="tips-box">
+              <h4>💡 Tips para comentarios efectivos:</h4>
+              <ul>
+                <li><strong>Enfócate en la imagen:</strong> Recuerda que estás rechazando la IMAGEN generada por Gemini (sin texto ni logo)</li>
+                <li><strong>Sé específico:</strong> Indica exactamente qué elemento visual está mal (rostros, colores, composición, etc.)</li>
+                <li><strong>Sugiere soluciones:</strong> No solo digas qué está mal, indica cómo mejorarlo</li>
+                <li><strong>Menciona elementos faltantes:</strong> Si faltan elementos de la descripción visual, indícalo claramente</li>
+                <li><strong>Prioriza:</strong> Marca como "CRÍTICO" si la imagen es inutilizable o "MEDIO/BAJO" si solo necesita ajustes menores</li>
+              </ul>
+            </div>
+            
+            <!-- Botones -->
+            <div class="button-group">
+              <button type="button" class="btn btn-secondary" onclick="window.close()">
+                ← Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                🚫 Confirmar Rechazo y Enviar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Mensaje de éxito (oculto inicialmente) -->
+      <div class="success-message" id="successMessage">
+        <div class="success-icon">✅</div>
+        <h2>¡Rechazo Registrado!</h2>
+        <p>
+          Tus comentarios sobre la imagen han sido enviados correctamente.<br>
+          La imagen se regenerará con Gemini considerando tus observaciones.
+        </p>
+        <p style="margin-top: 20px; color: #999; font-size: 14px;">
+          Puedes cerrar esta ventana
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Configuración
+    const webhookUrl = 'https://n8npruebas.universidadisep.com/webhook-test/prompts_de_imagenes';
+    
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Función para decodificar de forma segura
+    function safeDecodeURIComponent(str) {
+      try {
+        return decodeURIComponent(str || '');
+      } catch (e) {
+        console.warn('Error al decodificar:', str);
+        return str || 'No disponible';
+      }
+    }
+    
+    // Función para parse JSON seguro
+    function safeJSONParse(str) {
+      try {
+        return JSON.parse(str);
+      } catch (e) {
+        return null;
+      }
+    }
+    
+    // Intentar obtener datos desde localStorage primero (para datos grandes)
+    const dataKey = urlParams.get('dataKey');
+    let imageData = null;
+    
+    if (dataKey) {
+      console.log('🔑 Cargando datos desde localStorage con key:', dataKey);
+      try {
+        const storedData = localStorage.getItem(dataKey);
+        if (storedData) {
+          imageData = JSON.parse(storedData);
+          console.log('✅ Datos cargados desde localStorage');
+        }
+      } catch (e) {
+        console.warn('⚠️ No se pudo cargar desde localStorage:', e);
+      }
+    }
+    
+    // Si no hay datos en localStorage, intentar desde URL (fallback)
+    if (!imageData) {
+      console.log('📝 Cargando datos desde URL params');
+      imageData = {
+        // IDs básicos
+        itemId: urlParams.get('itemId') || urlParams.get('id'),
+        uniqueId: urlParams.get('unique_id') || urlParams.get('uniqueId'),
+        campaignId: urlParams.get('campaign_id') || urlParams.get('campaignId'),
+        itemIndex: urlParams.get('itemIndex'),
+        
+        // URLs y archivos
+        imageUrl: safeDecodeURIComponent(urlParams.get('image_url')),
+        fileName: safeDecodeURIComponent(urlParams.get('file_name')) || 'imagen.png',
+        
+        // Contenido principal
+        descripcionVisual: safeDecodeURIComponent(urlParams.get('descripcion_visual')) || 'No especificado',
+        promptGemini: safeDecodeURIComponent(urlParams.get('prompt_gemini') || urlParams.get('prompt_de_gemini')) || 'No especificado',
+        
+        // Campos adicionales
+        titulo: safeDecodeURIComponent(urlParams.get('titulo')) || 'Sin título',
+        estiloVisual: urlParams.get('estilo_visual') || 'N/A',
+        emocionObjetivo: urlParams.get('emocion_objetivo') || 'N/A',
+        paletaDominante: safeJSONParse(urlParams.get('paleta_dominante')) || [],
+        
+        // Metadata
+        plataforma: urlParams.get('plataforma'),
+        tipoContenido: urlParams.get('tipo_contenido')
+      };
+    }
+    
+    // También obtener IDs básicos de la URL por si acaso
+    if (!imageData.itemId) imageData.itemId = urlParams.get('itemId');
+    if (!imageData.uniqueId) imageData.uniqueId = urlParams.get('unique_id');
+    if (!imageData.campaignId) imageData.campaignId = urlParams.get('campaign_id');
+    if (!imageData.itemIndex) imageData.itemIndex = urlParams.get('itemIndex');
+    
+    // Cargar datos inmediatamente
+    console.log('URL completa:', window.location.href);
+    console.log('Parámetros detectados:', imageData);
+    
+    // Mostrar contenido inmediatamente
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    displayImageData();
+    
+    // Mostrar datos en la interfaz
+    function displayImageData() {
+      try {
+        // Información General
+        document.getElementById('display-ids').textContent = 
+          `${imageData.itemId || 'N/A'} / ${imageData.uniqueId || 'N/A'}`;
+        
+        document.getElementById('display-campaign').textContent = 
+          `Campaña ${imageData.campaignId || 'N/A'} / ${imageData.titulo || 'Sin título'}`;
+        
+        document.getElementById('display-platform').textContent = 
+          `${imageData.plataforma || 'N/A'} / ${imageData.tipoContenido || 'N/A'}`;
+        
+        document.getElementById('display-style').textContent = 
+          `${imageData.estiloVisual || 'N/A'} / ${imageData.emocionObjetivo || 'N/A'}`;
+        
+        // Descripción Visual
+        const descripcionText = imageData.descripcionVisual || 'No disponible';
+        document.getElementById('display-descripcionVisual').textContent = descripcionText;
+        
+        // Paleta de colores
+        const paletaContainer = document.getElementById('display-palette');
+        if (imageData.paletaDominante && imageData.paletaDominante.length > 0) {
+          paletaContainer.innerHTML = imageData.paletaDominante.map(color => `
+            <div class="color-item">
+              <div class="color-box" style="background-color: ${color};"></div>
+              <span class="color-code">${color}</span>
+            </div>
+          `).join('');
+        }
+        
+        // Prompt Gemini
+        const promptText = imageData.promptGemini || 'No disponible';
+        document.getElementById('display-promptGemini').textContent = promptText;
+        
+        console.log('✅ Datos cargados correctamente');
+      } catch (error) {
+        console.error('❌ Error al cargar datos:', error);
+        alert('Hubo un error al cargar los datos. Revisa la consola del navegador (F12)');
+      }
+    }
+    
+    // Función para cambiar de tab
+    function switchTab(tabName) {
+      // Ocultar todos los tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Mostrar el tab seleccionado
+      document.getElementById('tab-' + tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+    
+    // Contadores de caracteres para todos los textareas
+    document.querySelectorAll('textarea').forEach(textarea => {
+      const counter = textarea.parentElement.querySelector('.char-counter');
+      if (counter) {
+        textarea.addEventListener('input', function() {
+          counter.textContent = this.value.length;
+        });
+      }
+    });
+    
+    // Manejar envío del formulario
+    const form = document.getElementById('rejectionForm');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const cambiosVisuales = document.getElementById('cambios-visuales').value.trim();
+      const cambiosPrompt = document.getElementById('cambios-prompt').value.trim();
+      const comentariosGenerales = document.getElementById('comentarios-generales').value.trim();
+      
+      if (!cambiosVisuales) {
+        alert('Por favor, especifica qué cambios visuales necesita la imagen.');
+        return;
+      }
+      
+      if (cambiosVisuales.length < 20) {
+        alert('Por favor, describe los cambios visuales con más detalle (mínimo 20 caracteres).');
+        return;
+      }
+      
+      // Deshabilitar botón
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '⏳ Enviando...';
+      
+      try {
+        // Construir comentario completo estructurado
+        let comentarioCompleto = '=== RECHAZO DE IMAGEN ===\n\n';
+        
+        // Información de la imagen
+        comentarioCompleto += `📋 INFORMACIÓN:\n`;
+        comentarioCompleto += `ID: ${imageData.itemId}\n`;
+        comentarioCompleto += `Unique ID: ${imageData.uniqueId}\n`;
+        comentarioCompleto += `Campaña: ${imageData.campaignId}\n`;
+        comentarioCompleto += `Título: ${imageData.titulo}\n`;
+        comentarioCompleto += `Estilo Visual: ${imageData.estiloVisual}\n\n`;
+        
+        comentarioCompleto += '🎨 CAMBIOS VISUALES EN LA IMAGEN:\n' + cambiosVisuales + '\n\n';
+        
+        if (cambiosPrompt) {
+          comentarioCompleto += '🤖 CAMBIOS EN EL PROMPT:\n' + cambiosPrompt + '\n\n';
+        }
+        
+        if (comentariosGenerales) {
+          comentarioCompleto += '💬 COMENTARIOS ADICIONALES:\n' + comentariosGenerales;
+        }
+        
+        // Construir URL con parámetros
+        const params = new URLSearchParams({
+          action: 'rechazar',
+          itemId: imageData.itemId,
+          uniqueId: imageData.uniqueId,
+          campaignId: imageData.campaignId,
+          itemIndex: imageData.itemIndex,
+          comentario_rechazo: comentarioCompleto,
+          cambios_visuales: cambiosVisuales,
+          cambios_prompt: cambiosPrompt,
+          comentarios_adicionales: comentariosGenerales
+        });
+        
+        // Enviar al webhook
+        const img = new Image();
+        img.src = `${webhookUrl}?${params.toString()}`;
+        
+        // Esperar un momento
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Mostrar mensaje de éxito
+        document.getElementById('mainContent').innerHTML = '';
+        document.getElementById('successMessage').classList.add('show');
+        document.getElementById('mainContent').appendChild(document.getElementById('successMessage'));
+        
+        // Cerrar ventana después de 3 segundos
+        setTimeout(() => {
+          window.close();
+        }, 3000);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un error al enviar el rechazo. Por favor, inténtalo de nuevo.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '🚫 Confirmar Rechazo y Enviar';
+      }
+    });
+  </script>
+</body>
+</html>
