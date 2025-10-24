@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rechazar Imagen - Universidad ISEP</title>
+  <title>Rechazar Video HeyGen - Universidad ISEP</title>
   <style>
     * {
       margin: 0;
@@ -143,7 +143,7 @@
       border-radius: 6px;
       border: 1px solid #e0e0e0;
       margin-top: 10px;
-      max-height: 300px;
+      max-height: 400px;
       overflow-y: auto;
     }
     
@@ -157,31 +157,16 @@
       line-height: 1.6;
     }
     
-    /* Paleta de colores */
-    .color-palette {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-    
-    .color-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .color-box {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
-      border: 2px solid #ddd;
-    }
-    
-    .color-code {
+    .stats-badge {
+      display: inline-block;
+      background: #F1EDFF;
+      color: #7848FF;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-size: 12px;
-      color: #666;
-      font-family: monospace;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-top: 8px;
     }
     
     /* Formulario */
@@ -263,107 +248,75 @@
     .tips-box li {
       color: #555;
       font-size: 13px;
-      line-height: 1.6;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       padding-left: 20px;
       position: relative;
     }
     
     .tips-box li:before {
-      content: "•";
-      color: #7848FF;
-      font-weight: bold;
+      content: "→";
       position: absolute;
       left: 0;
+      color: #7848FF;
+      font-weight: bold;
     }
     
     /* Botones */
-    .button-group {
+    .btn-container {
       display: flex;
       gap: 15px;
       margin-top: 25px;
+      flex-wrap: wrap;
     }
     
     .btn {
-      flex: 1;
-      padding: 16px 24px;
+      padding: 15px 30px;
       border: none;
       border-radius: 8px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s;
-      text-align: center;
+      flex: 1;
+      min-width: 200px;
     }
     
     .btn-primary {
-      background: #f44336;
+      background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
       color: white;
-      box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
     }
     
-    .btn-primary:hover {
-      background: #d32f2f;
+    .btn-primary:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+      box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
     }
     
     .btn-primary:disabled {
-      background: #ccc;
+      opacity: 0.6;
       cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
     }
     
     .btn-secondary {
       background: #e0e0e0;
-      color: #555;
+      color: #666;
     }
     
     .btn-secondary:hover {
       background: #d0d0d0;
-      transform: translateY(-2px);
     }
     
-    .success-message {
-      display: none;
+    /* Loading state */
+    .loading-state {
       text-align: center;
-      padding: 60px 40px;
+      padding: 50px;
     }
     
-    .success-message.show {
-      display: block;
-    }
-    
-    .success-icon {
-      font-size: 64px;
-      margin-bottom: 20px;
-    }
-    
-    .success-message h2 {
-      color: #4caf50;
-      margin-bottom: 15px;
-      font-size: 28px;
-    }
-    
-    .success-message p {
-      color: #666;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: #666;
-    }
-    
-    .loading-spinner {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #7848FF;
+    .loading-state .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #7848FF;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
       animation: spin 1s linear infinite;
       margin: 0 auto 20px;
     }
@@ -373,22 +326,32 @@
       100% { transform: rotate(360deg); }
     }
     
-    @media (max-width: 768px) {
-      .tabs {
-        overflow-x: auto;
-      }
-      
-      .button-group {
-        flex-direction: column;
-      }
-      
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .content {
-        padding: 20px;
-      }
+    /* Success message */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 50px 30px;
+    }
+    
+    .success-message.show {
+      display: block;
+    }
+    
+    .success-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .success-message h2 {
+      color: #1B156B;
+      margin-bottom: 15px;
+      font-size: 28px;
+    }
+    
+    .success-message p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -396,148 +359,115 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <h1>🚫 Rechazar Imagen</h1>
-      <p>Sistema de Revisión de Imágenes - Universidad ISEP</p>
+      <h1>🎬 Rechazar Video HeyGen</h1>
+      <p>Sistema de Revisión de Contenido - Universidad ISEP</p>
     </div>
     
-    <!-- Loading -->
-    <div id="loadingState" class="loading">
-      <div class="loading-spinner"></div>
-      <p>Cargando información de la imagen...</p>
+    <!-- Loading state -->
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Cargando información del video...</p>
     </div>
     
-    <!-- Content -->
+    <!-- Main content -->
     <div class="content" id="mainContent" style="display: none;">
-      
-      <!-- Información General -->
-      <div class="info-section">
-        <h3>📊 Información General de la Imagen</h3>
-        <div class="info-grid">
-          <div class="info-item">
-            <label>ID / Unique ID</label>
-            <div class="value" id="display-ids">-</div>
-          </div>
-          <div class="info-item">
-            <label>Campaña / Título</label>
-            <div class="value" id="display-campaign">-</div>
-          </div>
-          <div class="info-item">
-            <label>Plataforma / Tipo</label>
-            <div class="value" id="display-platform">-</div>
-          </div>
-          <div class="info-item">
-            <label>Estilo Visual / Emoción</label>
-            <div class="value" id="display-style">-</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Tabs Navigation -->
+      <!-- Tabs -->
       <div class="tabs">
-        <button class="tab active" onclick="switchTab('descripcion')">🎨 Descripción Visual</button>
-        <button class="tab" onclick="switchTab('prompt')">🤖 Prompt Gemini</button>
-        <button class="tab" onclick="switchTab('rechazo')">🚫 Formulario de Rechazo</button>
+        <button class="tab active" onclick="switchTab('info')">📋 Información del Video</button>
+        <button class="tab" onclick="switchTab('rejection')">🚫 Formulario de Rechazo</button>
       </div>
       
-      <!-- Tab 1: Descripción Visual -->
-      <div id="tab-descripcion" class="tab-content active">
+      <!-- Tab 1: Información del Video -->
+      <div class="tab-content active" id="tab-info">
         <div class="info-section">
-          <h3>🎨 Descripción Visual de la Imagen</h3>
-          <div class="content-display">
-            <pre id="display-descripcionVisual">-</pre>
-          </div>
-          
-          <!-- Paleta de colores -->
-          <div style="margin-top: 20px;">
-            <h4 style="color: #7848FF; margin-bottom: 10px; font-size: 14px;">🎨 Paleta de Colores:</h4>
-            <div class="color-palette" id="display-palette">
-              <span style="color: #999; font-size: 13px;">Sin paleta definida</span>
+          <h3>📝 Datos Generales</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Título</label>
+              <div class="value" id="display-title">-</div>
+            </div>
+            <div class="info-item">
+              <label>Fecha Programada</label>
+              <div class="value" id="display-fecha">-</div>
+            </div>
+            <div class="info-item">
+              <label>Estado</label>
+              <div class="value" id="display-realizado">-</div>
+            </div>
+            <div class="info-item">
+              <label>Índice</label>
+              <div class="value" id="display-index">-</div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Tab 2: Prompt Gemini -->
-      <div id="tab-prompt" class="tab-content">
+        
         <div class="info-section">
-          <h3>🤖 Prompt Utilizado en Gemini</h3>
+          <h3>🎬 Script del Video</h3>
           <div class="content-display">
-            <pre id="display-promptGemini">-</pre>
+            <pre id="display-script">Cargando script...</pre>
+          </div>
+          <div style="margin-top: 10px;">
+            <span class="stats-badge" id="stats-chars">0 caracteres</span>
+            <span class="stats-badge" id="stats-words">0 palabras</span>
+            <span class="stats-badge" id="stats-lines">0 líneas</span>
           </div>
         </div>
       </div>
       
-      <!-- Tab 3: Formulario de Rechazo -->
-      <div id="tab-rechazo" class="tab-content">
+      <!-- Tab 2: Formulario de Rechazo -->
+      <div class="tab-content" id="tab-rejection">
+        <div class="tips-box">
+          <h4>💡 Guía para especificar cambios en el video:</h4>
+          <ul>
+            <li>Describe con claridad qué parte del script necesita cambios</li>
+            <li>Especifica el tono o estilo que debe tener el video</li>
+            <li>Indica si hay problemas con el timing o duración del contenido</li>
+            <li>Menciona si el mensaje no es claro o efectivo</li>
+            <li>Sugiere mejoras específicas en lugar de solo criticar</li>
+          </ul>
+        </div>
+        
         <div class="form-section">
-          <h3>📝 Especifica los Cambios Necesarios en la Imagen</h3>
-          
+          <h3>🎬 Especifica los cambios necesarios</h3>
           <form id="rejectionForm">
-            
             <div class="form-group">
-              <label for="cambios-visuales">
-                Cambios Visuales en la Imagen
+              <label>
+                Cambios en el Script
                 <span class="required">*</span>
               </label>
               <textarea 
-                id="cambios-visuales"
-                name="cambios_visuales"
+                id="cambios-script" 
+                placeholder="Describe qué cambios necesita el script del video. Por ejemplo: 'El tono es muy formal, debería ser más cercano y amigable', 'La introducción es muy larga, acortar a 10 segundos', etc."
                 required
-                placeholder="Especifica qué está mal en la IMAGEN GENERADA (sin texto ni logo)...&#10;&#10;Ejemplos:&#10;- La cara de la persona se ve distorsionada&#10;- Los colores no coinciden con la paleta especificada&#10;- El fondo está muy saturado, necesita ser más sutil&#10;- Los iconos no se ven claros, aumentar el tamaño&#10;- Faltan elementos mencionados en la descripción (libros, símbolos, etc.)&#10;- La composición está desbalanceada, centrar mejor los elementos"
-                maxlength="1500"
               ></textarea>
               <div class="char-count">
-                <span class="char-counter">0</span> / 1500 caracteres
+                <span class="char-counter">0</span> caracteres
               </div>
             </div>
             
             <div class="form-group">
-              <label for="cambios-prompt">
-                Cambios en el Prompt de Gemini (Opcional)
-              </label>
+              <label>Ajustes de Tono y Estilo</label>
               <textarea 
-                id="cambios-prompt"
-                name="cambios_prompt"
-                placeholder="Si es necesario ajustar el prompt para mejorar la imagen...&#10;&#10;Ejemplos:&#10;- Agregar más detalles sobre el estilo de ilustración&#10;- Especificar mejor la iluminación y sombras&#10;- Aclarar la composición de los elementos&#10;- Ajustar las instrucciones sobre los colores&#10;- Mejorar la descripción de los personajes o elementos"
-                maxlength="1000"
+                id="cambios-tono" 
+                placeholder="¿Qué ajustes de tono o estilo necesita? Por ejemplo: 'Más profesional', 'Más dinámico', 'Menos técnico', etc."
               ></textarea>
               <div class="char-count">
-                <span class="char-counter">0</span> / 1000 caracteres
+                <span class="char-counter">0</span> caracteres
               </div>
             </div>
             
             <div class="form-group">
-              <label for="comentarios-generales">
-                Comentarios Adicionales
-              </label>
+              <label>Comentarios Adicionales</label>
               <textarea 
-                id="comentarios-generales"
-                name="comentario_rechazo"
-                placeholder="Comentarios generales sobre el rechazo...&#10;&#10;Ejemplos:&#10;- La imagen necesita regenerarse completamente&#10;- Solo ajustar el balance de colores&#10;- Prioridad: CRÍTICO / MEDIO / BAJO"
-                maxlength="1000"
+                id="comentarios-generales" 
+                placeholder="Cualquier otro comentario, sugerencia o contexto adicional que ayude a mejorar el video."
               ></textarea>
               <div class="char-count">
-                <span class="char-counter">0</span> / 1000 caracteres
+                <span class="char-counter">0</span> caracteres
               </div>
             </div>
             
-            <!-- Tips -->
-            <div class="tips-box">
-              <h4>💡 Tips para comentarios efectivos:</h4>
-              <ul>
-                <li><strong>Enfócate en la imagen:</strong> Recuerda que estás rechazando la IMAGEN generada por Gemini (sin texto ni logo)</li>
-                <li><strong>Sé específico:</strong> Indica exactamente qué elemento visual está mal (rostros, colores, composición, etc.)</li>
-                <li><strong>Sugiere soluciones:</strong> No solo digas qué está mal, indica cómo mejorarlo</li>
-                <li><strong>Menciona elementos faltantes:</strong> Si faltan elementos de la descripción visual, indícalo claramente</li>
-                <li><strong>Prioriza:</strong> Marca como "CRÍTICO" si la imagen es inutilizable o "MEDIO/BAJO" si solo necesita ajustes menores</li>
-              </ul>
-            </div>
-            
-            <!-- Botones -->
-            <div class="button-group">
-              <button type="button" class="btn btn-secondary" onclick="window.close()">
-                ← Cancelar
-              </button>
+            <div class="btn-container">
               <button type="submit" class="btn btn-primary" id="submitBtn">
                 🚫 Confirmar Rechazo y Enviar
               </button>
@@ -551,8 +481,8 @@
         <div class="success-icon">✅</div>
         <h2>¡Rechazo Registrado!</h2>
         <p>
-          Tus comentarios sobre la imagen han sido enviados correctamente.<br>
-          La imagen se regenerará con Gemini considerando tus observaciones.
+          Tus comentarios sobre el video HeyGen han sido enviados correctamente.<br>
+          El script se regenerará considerando tus observaciones.
         </p>
         <p style="margin-top: 20px; color: #999; font-size: 14px;">
           Puedes cerrar esta ventana
@@ -563,7 +493,7 @@
   
   <script>
     // Configuración
-    const webhookUrl = 'https://n8npruebas.universidadisep.com/webhook-test/prompts_de_imagenes';
+    const webhookUrl = 'https://n8npruebas.universidadisep.com/webhook-test/creador_de_heygen';
     
     // Obtener parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -578,111 +508,52 @@
       }
     }
     
-    // Función para parse JSON seguro
-    function safeJSONParse(str) {
-      try {
-        return JSON.parse(str);
-      } catch (e) {
-        return null;
-      }
+    // Función para contar palabras
+    function contarPalabras(texto) {
+      if (!texto) return 0;
+      return texto.trim().split(/\s+/).length;
     }
     
-    // Intentar obtener datos desde localStorage primero (para datos grandes)
-    const dataKey = urlParams.get('dataKey');
-    let imageData = null;
-    
-    if (dataKey) {
-      console.log('🔑 Cargando datos desde localStorage con key:', dataKey);
-      try {
-        const storedData = localStorage.getItem(dataKey);
-        if (storedData) {
-          imageData = JSON.parse(storedData);
-          console.log('✅ Datos cargados desde localStorage');
-        }
-      } catch (e) {
-        console.warn('⚠️ No se pudo cargar desde localStorage:', e);
-      }
-    }
-    
-    // Si no hay datos en localStorage, intentar desde URL (fallback)
-    if (!imageData) {
-      console.log('📝 Cargando datos desde URL params');
-      imageData = {
-        // IDs básicos
-        itemId: urlParams.get('itemId') || urlParams.get('id'),
-        uniqueId: urlParams.get('unique_id') || urlParams.get('uniqueId'),
-        campaignId: urlParams.get('campaign_id') || urlParams.get('campaignId'),
-        itemIndex: urlParams.get('itemIndex'),
-        
-        // URLs y archivos
-        imageUrl: safeDecodeURIComponent(urlParams.get('image_url')),
-        fileName: safeDecodeURIComponent(urlParams.get('file_name')) || 'imagen.png',
-        
-        // Contenido principal
-        descripcionVisual: safeDecodeURIComponent(urlParams.get('descripcion_visual')) || 'No especificado',
-        promptGemini: safeDecodeURIComponent(urlParams.get('prompt_gemini') || urlParams.get('prompt_de_gemini')) || 'No especificado',
-        
-        // Campos adicionales
-        titulo: safeDecodeURIComponent(urlParams.get('titulo')) || 'Sin título',
-        estiloVisual: urlParams.get('estilo_visual') || 'N/A',
-        emocionObjetivo: urlParams.get('emocion_objetivo') || 'N/A',
-        paletaDominante: safeJSONParse(urlParams.get('paleta_dominante')) || [],
-        
-        // Metadata
-        plataforma: urlParams.get('plataforma'),
-        tipoContenido: urlParams.get('tipo_contenido')
-      };
-    }
-    
-    // También obtener IDs básicos de la URL por si acaso
-    if (!imageData.itemId) imageData.itemId = urlParams.get('itemId');
-    if (!imageData.uniqueId) imageData.uniqueId = urlParams.get('unique_id');
-    if (!imageData.campaignId) imageData.campaignId = urlParams.get('campaign_id');
-    if (!imageData.itemIndex) imageData.itemIndex = urlParams.get('itemIndex');
+    // Cargar datos del video desde la URL
+    const videoData = {
+      itemId: safeDecodeURIComponent(urlParams.get('itemId')) || 'Sin título',
+      itemIndex: urlParams.get('itemIndex') || '0',
+      script: safeDecodeURIComponent(urlParams.get('script')) || 'Sin script disponible',
+      fecha: safeDecodeURIComponent(urlParams.get('fecha')) || 'N/A',
+      realizado: urlParams.get('realizado') || '0'
+    };
     
     // Cargar datos inmediatamente
     console.log('URL completa:', window.location.href);
-    console.log('Parámetros detectados:', imageData);
+    console.log('Parámetros detectados:', videoData);
     
     // Mostrar contenido inmediatamente
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
-    displayImageData();
+    displayVideoData();
     
     // Mostrar datos en la interfaz
-    function displayImageData() {
+    function displayVideoData() {
       try {
         // Información General
-        document.getElementById('display-ids').textContent = 
-          `${imageData.itemId || 'N/A'} / ${imageData.uniqueId || 'N/A'}`;
+        document.getElementById('display-title').textContent = videoData.itemId;
+        document.getElementById('display-fecha').textContent = videoData.fecha;
+        document.getElementById('display-realizado').textContent = 
+          videoData.realizado === '0' ? '⏳ Pendiente' : '✅ Realizado';
+        document.getElementById('display-index').textContent = 
+          `Video #${parseInt(videoData.itemIndex) + 1}`;
         
-        document.getElementById('display-campaign').textContent = 
-          `Campaña ${imageData.campaignId || 'N/A'} / ${imageData.titulo || 'Sin título'}`;
+        // Script
+        document.getElementById('display-script').textContent = videoData.script;
         
-        document.getElementById('display-platform').textContent = 
-          `${imageData.plataforma || 'N/A'} / ${imageData.tipoContenido || 'N/A'}`;
+        // Estadísticas del script
+        const numCaracteres = videoData.script.length;
+        const numPalabras = contarPalabras(videoData.script);
+        const numLineas = videoData.script.split('\n').length;
         
-        document.getElementById('display-style').textContent = 
-          `${imageData.estiloVisual || 'N/A'} / ${imageData.emocionObjetivo || 'N/A'}`;
-        
-        // Descripción Visual
-        const descripcionText = imageData.descripcionVisual || 'No disponible';
-        document.getElementById('display-descripcionVisual').textContent = descripcionText;
-        
-        // Paleta de colores
-        const paletaContainer = document.getElementById('display-palette');
-        if (imageData.paletaDominante && imageData.paletaDominante.length > 0) {
-          paletaContainer.innerHTML = imageData.paletaDominante.map(color => `
-            <div class="color-item">
-              <div class="color-box" style="background-color: ${color};"></div>
-              <span class="color-code">${color}</span>
-            </div>
-          `).join('');
-        }
-        
-        // Prompt Gemini
-        const promptText = imageData.promptGemini || 'No disponible';
-        document.getElementById('display-promptGemini').textContent = promptText;
+        document.getElementById('stats-chars').textContent = `${numCaracteres} caracteres`;
+        document.getElementById('stats-words').textContent = `${numPalabras} palabras`;
+        document.getElementById('stats-lines').textContent = `${numLineas} líneas`;
         
         console.log('✅ Datos cargados correctamente');
       } catch (error) {
@@ -723,17 +594,17 @@
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const cambiosVisuales = document.getElementById('cambios-visuales').value.trim();
-      const cambiosPrompt = document.getElementById('cambios-prompt').value.trim();
+      const cambiosScript = document.getElementById('cambios-script').value.trim();
+      const cambiosTono = document.getElementById('cambios-tono').value.trim();
       const comentariosGenerales = document.getElementById('comentarios-generales').value.trim();
       
-      if (!cambiosVisuales) {
-        alert('Por favor, especifica qué cambios visuales necesita la imagen.');
+      if (!cambiosScript) {
+        alert('Por favor, especifica qué cambios necesita el script del video.');
         return;
       }
       
-      if (cambiosVisuales.length < 20) {
-        alert('Por favor, describe los cambios visuales con más detalle (mínimo 20 caracteres).');
+      if (cambiosScript.length < 20) {
+        alert('Por favor, describe los cambios con más detalle (mínimo 20 caracteres).');
         return;
       }
       
@@ -743,20 +614,18 @@
       
       try {
         // Construir comentario completo estructurado
-        let comentarioCompleto = '=== RECHAZO DE IMAGEN ===\n\n';
+        let comentarioCompleto = '=== RECHAZO DE VIDEO HEYGEN ===\n\n';
         
-        // Información de la imagen
+        // Información del video
         comentarioCompleto += `📋 INFORMACIÓN:\n`;
-        comentarioCompleto += `ID: ${imageData.itemId}\n`;
-        comentarioCompleto += `Unique ID: ${imageData.uniqueId}\n`;
-        comentarioCompleto += `Campaña: ${imageData.campaignId}\n`;
-        comentarioCompleto += `Título: ${imageData.titulo}\n`;
-        comentarioCompleto += `Estilo Visual: ${imageData.estiloVisual}\n\n`;
+        comentarioCompleto += `Título: ${videoData.itemId}\n`;
+        comentarioCompleto += `Fecha: ${videoData.fecha}\n`;
+        comentarioCompleto += `Índice: ${videoData.itemIndex}\n\n`;
         
-        comentarioCompleto += '🎨 CAMBIOS VISUALES EN LA IMAGEN:\n' + cambiosVisuales + '\n\n';
+        comentarioCompleto += '🎬 CAMBIOS EN EL SCRIPT:\n' + cambiosScript + '\n\n';
         
-        if (cambiosPrompt) {
-          comentarioCompleto += '🤖 CAMBIOS EN EL PROMPT:\n' + cambiosPrompt + '\n\n';
+        if (cambiosTono) {
+          comentarioCompleto += '🎨 AJUSTES DE TONO Y ESTILO:\n' + cambiosTono + '\n\n';
         }
         
         if (comentariosGenerales) {
@@ -766,14 +635,14 @@
         // Construir URL con parámetros
         const params = new URLSearchParams({
           action: 'rechazar',
-          itemId: imageData.itemId,
-          uniqueId: imageData.uniqueId,
-          campaignId: imageData.campaignId,
-          itemIndex: imageData.itemIndex,
+          itemId: videoData.itemId,
+          itemIndex: videoData.itemIndex,
           comentario_rechazo: comentarioCompleto,
-          cambios_visuales: cambiosVisuales,
-          cambios_prompt: cambiosPrompt,
-          comentarios_adicionales: comentariosGenerales
+          cambios_script: cambiosScript,
+          cambios_tono: cambiosTono,
+          comentarios_adicionales: comentariosGenerales,
+          script_original: videoData.script,
+          fecha: videoData.fecha
         });
         
         // Enviar al webhook
